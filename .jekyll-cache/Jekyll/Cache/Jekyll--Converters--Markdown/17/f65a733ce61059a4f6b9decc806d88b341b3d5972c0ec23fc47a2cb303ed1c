@@ -1,0 +1,54 @@
+I"�\[E\{\|\hat{\boldsymbol{x}}_{EZF}-\boldsymbol{x}\|^2\}\leq \frac{1}{2}E\{\|\hat{\boldsymbol{x}}_{ZF}-\boldsymbol{x}\|^2\}\]
+
+\[y = \begin{bmatrix}
+H_1 &amp; H_2 &amp; \cdots &amp; H_K
+\end{bmatrix}
+\begin{bmatrix}
+	x_1 \\
+	x_2 \\
+	\vdots \\
+	x_K	
+\end{bmatrix}+n\]
+
+\[y_i = y-\begin{bmatrix}
+H_1 &amp; \cdots &amp; H_{i-1} &amp; H_{i+1} \cdots &amp; H_K
+\end{bmatrix}
+\begin{bmatrix}
+	x_1 \\
+	\vdots \\
+	x_{i-1} \\
+	x_{i+1} \\
+	\vdots \\
+	x_K	
+\end{bmatrix}
+=H_ix_i+n\]
+
+<p>\(\begin{aligned}
+y&amp;=Hx+n \\
+&amp;=\begin{bmatrix} 
+h_1 &amp; h_2 &amp; \cdots &amp; h_K
+\end{bmatrix}
+\begin{bmatrix} 
+x_1  \\ 
+x_2  \\
+\vdots \\
+x_K
+\end{bmatrix}+n
+\end{aligned}\) {\end{equation}</p>
+
+\[\]
+
+<p><img src="C:\Users\admin\Desktop\公式编辑器.assets\image-20201015215558177.png" alt="image-20201015215558177" />
+\(\hat{\mathbf{y}}_i = \mathbf{y}-\sum_{k=1,k\neq i}^{2K}\mathbf{h}_k\hat{x}_t(k)=\mathbf{h}_i\hat{x}_{t+1}(i)\)</p>
+
+\[\begin{aligned}
+MSE_{ZF}  &amp;=E{\|\boldsymbol{x}-\hat{\boldsymbol{x}}_{ZF}\|_2^2} \\
+MSE_{MMSE}&amp;=E{\|\boldsymbol{x}-\hat{\boldsymbol{x}}_{MMSE}\|_2^2}
+\end{aligned}\]
+
+\[\boldsymbol{y}=\boldsymbol{Hx}+\boldsymbol{n} \\
+\boldsymbol{y}=\boldsymbol{HVx}+\boldsymbol{n}\]
+
+\[h_{i,j}\in CN(0,1)\]
+
+:ET

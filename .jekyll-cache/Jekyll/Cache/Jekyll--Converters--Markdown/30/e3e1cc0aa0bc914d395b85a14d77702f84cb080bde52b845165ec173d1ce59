@@ -1,0 +1,81 @@
+I"4<p>#tensorflow模型保存与回复
+##保存方法</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>saver = tf.train.Saver()    #创建一个saver，参数可以为空，此时表示保存定义的所有变量
+ #将会话sess保存，该语句只能在session里面执行
+saver.save(sess, 'models/model_name') 
+</code></pre></div></div>
+<p><em>在使用模型时，我们通常需要知道该模型的输入和输出，所以记得将输出添加到一个集合中，但如果你命名了输出操作，这一步可以省略</em></p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>tf.add_to_collection('你想要的名称，重载模型时使用,比如out', 输出，在前向结构中定义的)
+</code></pre></div></div>
+<p>##保存后的文件 <a href="https://blog.csdn.net/u011961856/article/details/77064631">参考</a>
+<em>checkpoint</em>
+<em>model_name.cpkt.index</em> <br />
+<em>model_name.cpkt.meta</em><br />
+<em>model_name.cpkt.data-00000-of-00001</em><br />
+<strong>meta文件保存了greph结构，包括GraphDef，SaveDef等，当存在meta文件时，我们可以不用模型，也可以运行，而如果没有meta file，我们需要定义好好模型，再加载data file，得到变量值。index file为一个string-string table，table的key值为tensor名，value 为BundleEntryProto。data file保存了模型的所有变量的值</strong>
+##加载模型</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>saver = tf.train.import_meta_graph('models/model_name.meta', clear_devices=True)#clear_devices=True表示可以在不同机器使用模型
+saver.restore(sess, 'models/model_name')
+#两种方法调用指定的运算操作，选择其中一个就行，推荐第一种
+#from saved collection:
+output = tf.get_collection('output')[0]#0应该没什么用
+#By name:
+output = tf.get_default_graph.get_operation_by_name('activation_opt').outputs[0]
+#Used imported graph for data, you must have to feed data as {'x:0':data}, Do not forget on ':0' part!
+data = 50
+result = sess.run(output, {'x:0': data})
+print(result)
+</code></pre></div></div>
+<p>#多个模型的保存与回放 
+##方法1 <a href="https://blog.csdn.net/lc013/article/details/84202901">参考</a></p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import tensorflow as tf
+
+class ImportGraph():
+    """  Importing and running isolated TF graph """
+    def __init__(self, loc):
+        # Create local graph and use it in the session
+        self.graph = tf.Graph()
+        self.sess = tf.Session(graph=self.graph)
+        with self.graph.as_default():
+            # Import saved model from location 'loc' into local graph
+            # 从指定路径加载模型到局部图中
+            saver = tf.train.import_meta_graph(loc + '.meta',
+                                               clear_devices=True)
+            saver.restore(self.sess, loc)
+            # There are TWO options how to get activation operation:
+            # 两种方式来调用运算或者参数
+              # FROM SAVED COLLECTION:            
+            self.activation = tf.get_collection('activation')[0]
+              # BY NAME:
+            self.activation = self.graph.get_operation_by_name('activation_opt').outputs[0]
+
+    def run(self, data):
+        """ Running the activation operation previously imported """
+        # The 'x' corresponds to name of input placeholder
+        return self.sess.run(self.activation, feed_dict={"x:0": data})
+      
+      
+### Using the class ###
+# 测试样例
+data = 50         # random data
+model = ImportGraph('models/model_name')
+result = model.run(data)
+print(result)
+</code></pre></div></div>
+
+<p>##方法2 <a href="https://blog.csdn.net/jmh1996/article/details/78793650">参考</a></p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>class Predict:
+    def __init__(self....):
+        self.graph=tf.Graph()#为每个类(实例)单独创建一个graph
+        with self.graph.as_default():
+             self.saver=tf.train.import_meta_graph(...)#创建恢复器
+             #注意！恢复器必须要在新创建的图里面生成,否则会出错。
+        self.sess=tf.Session(graph=self.graph)#创建新的sess
+        with self.sess.as_default():
+             with self.graph.as_default():
+                 self.saver.restore(self.sess,...)#从恢复点恢复参数
+
+   def predict(self,...):
+        sess.run(output,feed_dict={输入})
+</code></pre></div></div>
+:ET

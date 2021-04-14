@@ -1,0 +1,16 @@
+I"?<h1 id="版本控制器git的基本命令">版本控制器git的基本命令</h1>
+<h2 id="1初始化">1、初始化</h2>
+<p><code class="language-plaintext highlighter-rouge">git init</code>在当前目录初始化一个git仓库</p>
+<h2 id="2添加文件目录到git">2、添加文件/目录到git</h2>
+
+<p><code class="language-plaintext highlighter-rouge">git add .</code> 当前目录下的所有文件均被添加到git仓库</p>
+
+<h2 id="3提交文件">3、提交文件</h2>
+<p><code class="language-plaintext highlighter-rouge">git commit -m "这是注释，可以是任何字符"</code></p>
+
+<h2 id="4提交到远程仓库">4、提交到远程仓库</h2>
+
+<h3 id="41先添加github仓库路径">4.1、先添加github仓库路径</h3>
+
+<p><code class="language-plaintext highlighter-rouge">git remote add origin </code></p>
+:ET
