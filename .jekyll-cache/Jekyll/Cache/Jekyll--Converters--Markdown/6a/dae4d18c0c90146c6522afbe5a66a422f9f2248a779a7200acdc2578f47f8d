@@ -1,0 +1,480 @@
+I"�O<h1 id="win10中使用docker搭建django开发环境">Win10中使用Docker搭建Django开发环境</h1>
+
+<h2 id="下载链接">下载链接</h2>
+
+<p><a href="https://hub.docker.com/">Docker</a></p>
+
+<h2 id="安装">安装</h2>
+
+<p>无脑安装</p>
+
+<ul>
+  <li>问题</li>
+</ul>
+
+<p>使用docker需要启用hyper-v，默认情况下开启hyper-v需要打开bios的虚拟功能</p>
+
+<h2 id="docker常用命令">docker常用命令</h2>
+
+<ul>
+  <li>
+    <p>容器的状态（7种）</p>
+
+    <ul>
+      <li>created（已创建）</li>
+      <li>restarting（重启中）</li>
+      <li>running（运行中）</li>
+      <li>removing（迁移中）</li>
+      <li>paused（暂停）</li>
+      <li>exited（停止）</li>
+      <li>dead（死亡</li>
+    </ul>
+  </li>
+  <li>
+    <p>docker常用命令</p>
+
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker <span class="nt">--version</span>  <span class="c"># 产看docker版本</span>
+docker ps         <span class="c"># 查看运行的容器</span>
+docker pull ubuntu  <span class="c"># 获取镜像</span>
+docker search <span class="o">[</span>httpd] <span class="c"># 查找镜像</span>
+docker rmi <span class="o">[</span>hello-world]  <span class="c"># 删除镜像</span>
+docker <span class="nb">rm</span> <span class="o">[</span>容器ID]  <span class="c"># 删除容器</span>
+docker image <span class="nb">ls</span>   <span class="c"># 显示所有镜像</span>
+docker stop <span class="o">[</span>容器ID或容器名]  <span class="c"># 停止一个正在运行的容器</span>
+docker <span class="nb">kill</span> <span class="o">[</span>容器ID或容器名]  <span class="c"># 直接关闭容器</span>
+docker restart 容器id  <span class="c"># 重启容器</span>
+docker attach 容器ID  <span class="c"># 进入容器</span>
+docker run <span class="nt">-it</span> <span class="nt">-p</span> 8080:80 镜像ID  <span class="c"># 将外部宿主机的8080端口映射到docker内部80端口，外部端口可以多对一或一对一映射到内部端口，但不能一对多映射到内部端口</span>
+docker <span class="nb">exec</span> <span class="nt">-it</span> 784e12ee483d  /bin/bash  <span class="c"># 进入容器</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>docker批量操作命令</p>
+
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker stop <span class="si">$(</span>docker ps <span class="nt">-q</span><span class="si">)</span>  <span class="c"># 停止所有容器</span>
+docker <span class="nb">rm</span> <span class="si">$(</span>docker ps <span class="nt">-aq</span><span class="si">)</span>   <span class="c"># 删除所有停止容器</span>
+docker stop <span class="si">$(</span>docker ps <span class="nt">-q</span><span class="si">)</span> &amp; docker <span class="nb">rm</span> <span class="si">$(</span>docker ps <span class="nt">-aq</span><span class="si">)</span> <span class="c"># 删除所有容器</span>
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h2 id="搭建基础开发环境">搭建基础开发环境</h2>
+
+<ol>
+  <li>
+    <p>使用ubuntu作为基础镜像</p>
+
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker pull ubuntu:16.04  <span class="c"># 拉取ubuntu：16.04镜像</span>
+docker run <span class="nt">-it</span> ubuntu     <span class="c"># 以交互式方式运行ubuntu</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>在ubuntu系统中配置django开发环境(不用这么麻烦，见3)</p>
+
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>apt-get update  <span class="c"># 更新源</span>
+apt-get <span class="nb">install </span>python3  <span class="c"># 要加3，不然安装的是python2.x版本</span>
+apt-get <span class="nb">install </span>python3-pip  <span class="c">#安装pip</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>以python镜像为基础，搭建django开发环境</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker pull python:3.7  # 拉取python3.7官方镜像
+docker run -it python:3.7 /bin/bash  # 以交互是方式运行该镜像，其实建立了容器
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>打包为镜像</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker commit [OPTIONS] CONTAINER [REPOSITORY[:TAG]]
+OPTIONS说明：
+   
+-a :提交的镜像作者；
+   
+-c :使用Dockerfile指令来创建镜像；
+   
+-m :提交时的说明文字；
+   
+-p :在commit时，将容器暂停。
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>在服务器上安装docker</p>
+  </li>
+  <li>
+    <p>拉取自己制作的镜像</p>
+  </li>
+  <li>
+    <p>创建容器并建立端口映射</p>
+  </li>
+  <li>
+    <p>安装ssh-server</p>
+  </li>
+</ol>
+
+<h2 id="制作好镜像后">制作好镜像后</h2>
+
+<ol>
+  <li>
+    <p>拉取镜像</p>
+
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker pull zfzdr/django:1.2
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>创建容器并端口映射</p>
+
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run <span class="nt">-it</span> <span class="nt">-p</span> 22:22 <span class="nt">-p</span> 8000:8000 zfzdr/django:1.2
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>创建密码</p>
+
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>passwd
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>配置pycharm</p>
+
+    <ul>
+      <li>python解释器配置</li>
+    </ul>
+
+    <p><img src="/assets/img/image-20200802111732688.png" alt="image-20200802111732688" /></p>
+
+    <ul>
+      <li>运行环境配置</li>
+    </ul>
+  </li>
+</ol>
+
+<p><img src="/assets/img/image-20200802111500006.png" alt="image-20200802111500006" /></p>
+
+<h2 id="ssh连接docker容器">SSH连接docker容器</h2>
+
+<ol>
+  <li>
+    <p>创建容器并端口映射</p>
+
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run <span class="nt">-it</span> <span class="nt">-p</span> 22:22 <span class="nt">-p</span> 8000:8000 <span class="nt">-p</span> 8080:8080 zfzdr/django:1.2
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>安装ssh，修改配置，设置开机自启动</p>
+
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vim /etc/ssh/sshd_config  <span class="c"># 修改配置文件</span>
+</code></pre></div>    </div>
+
+    <p><img src="/assets/img/image-20200803091513258.png" alt="image-20200803091513258" /></p>
+
+    <ul>
+      <li>重启ssh服务，并设置开机启动：</li>
+    </ul>
+
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span> /etc/init.d/ssh  restart  <span class="c"># 重启</span>
+   
+<span class="c"># 开机自动启动ssh命令</span>
+<span class="nb">sudo </span>systemctl <span class="nb">enable </span>ssh
+   
+<span class="c"># 关闭ssh开机自动启动命令</span>
+<span class="nb">sudo </span>systemctl disable ssh
+   
+<span class="c"># 单次开启ssh</span>
+<span class="nb">sudo </span>systemctl start ssh
+   
+<span class="c"># 单次关闭ssh</span>
+<span class="nb">sudo </span>systemctl stop ssh
+   
+<span class="c"># 设置好后重启系统</span>
+reboot
+   
+<span class="c">#查看ssh是否启动，看到Active: active (running)即表示成功</span>
+<span class="nb">sudo </span>systemctl status ssh
+   
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>pycharm使用ssh连接本地docker</p>
+  </li>
+</ol>
+
+<h1 id="安装django-mdeditor和markdown">安装django-mdeditor和markdown</h1>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip install django-mdeditor  # 安装插件
+pip install markdown
+</code></pre></div></div>
+
+<ul>
+  <li>添加mdeditor</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    INSTALLED_APPS <span class="o">=</span> <span class="o">[</span>
+        ...
+        <span class="s1">'mdeditor'</span>,
+    <span class="o">]</span>
+</code></pre></div></div>
+
+<h1 id="安装nginx和uwsgi参考">安装nginx和uwsgi<a href="https://www.cnblogs.com/zouzou-busy/p/11625994.html">参考</a></h1>
+
+<ol>
+  <li>安装nginx软件并测试</li>
+</ol>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>apt-get <span class="nb">install </span>python-dev nginx  <span class="c"># 安装</span>
+nginx <span class="nt">-v</span> <span class="c"># 查看nginx安装版本</span>
+</code></pre></div></div>
+
+<p>Nginx的默认端口为80，很容易被其他服务占用，因此需要修改成其他端口。打开文件</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vim /etc/nginx/nginx.conf 
+</code></pre></div></div>
+
+<p>如果能找到监听的端口，直接修改 。找不到的也没关系 ，找到如下配置 ，说明是引用了其他目录的文件</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    include /etc/nginx/conf.d/*.conf;
+    include /etc/nginx/sites-enabled/*;
+}
+</code></pre></div></div>
+
+<p>打开 /etc/nginx/sites-enabled/ ，找到并编辑 default ，将80修改成8080</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Default server configuration
+#
+server {
+    listen 8088 default_server;
+    listen [::]:8088 default_server;
+
+    ...........
+</code></pre></div></div>
+
+<p>Nginx启动命令</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>service nginx start
+
+service nginx restart
+
+service nginx stop
+
+</code></pre></div></div>
+
+<p><img src="/assets/img/image-20200805110106915.png" alt="image-20200805110106915" /></p>
+
+<ol>
+  <li>
+    <p>安装usgi</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo pip install uwsgi --upgrade
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>测试uwsgi运行状态</p>
+
+    <ul>
+      <li>新建文件test.py</li>
+    </ul>
+  </li>
+</ol>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">application</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">start_response</span><span class="p">):</span>
+    <span class="n">start_response</span><span class="p">(</span><span class="s">'200 OK'</span><span class="p">,</span> <span class="p">[(</span><span class="s">'Content-Type'</span><span class="p">,</span><span class="s">'text/html'</span><span class="p">)])</span>
+    <span class="k">return</span> <span class="p">[</span><span class="sa">b</span><span class="s">"Hello World"</span><span class="p">]</span>
+</code></pre></div></div>
+
+<ul>
+  <li>
+    <p>使用uwsgi运行该文件</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>uwsgi --http :8080 --wsgi-file test.py  # 端口可以改变
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<p><img src="/assets/img/image-20200805103645716.png" alt="image-20200805103645716" /></p>
+
+<p>此语句的意思是，使用uwsgi运行test.py文件， 采用http模式， 端口8000</p>
+
+<ol>
+  <li>uwsgi运行项目</li>
+</ol>
+
+<p>确保当前的路径为项目根目录下，也就是和manage.py文件同级，注意–http后面有空格</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>uwsgi <span class="nt">--http</span> :8080 <span class="nt">---module</span> myblog.wsgi
+</code></pre></div></div>
+
+<ul>
+  <li>–http  指明是http协议</li>
+  <li>:9001 指定端口号</li>
+  <li>–module Apitest.wsgi 加载指定的wsgi模块，根据自己的项目名称自己指定</li>
+</ul>
+
+<p>访问我们的django自带的后台，静态文件不加载</p>
+
+<p><img src="/assets/img/image-20200805133326448.png" alt="image-20200805133326448" /></p>
+
+<p>补充：大家都知道pycharm会自动检测django项目，如果代码有变动，会自动重启，uswgi也可以，加上一个参数就可以了</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>uwsgi <span class="nt">--http</span> :8080 <span class="nt">--module</span> myblog.wsgi <span class="nt">--py-autoreload</span><span class="o">=</span>1
+</code></pre></div></div>
+
+<p>多次启动会遇到端口占用问题，解决方法如下：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>lsof -i :8080  #产看8080端口占用情况
+kill -9 pid   # 使用 kill 命令即可杀掉该进程
+</code></pre></div></div>
+
+<ol>
+  <li>通过配置文件启动uwsgi</li>
+</ol>
+
+<p>在根目录 /home/zfzdr/myblog-web下面新建一个uwsgi_conf文件夹下，然后在uwsgi_conf文件夹下新建uwsgi.ini文件</p>
+
+<div class="language-ini highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nn">[uwsgi]</span>
+<span class="c">#使用HTTP访问的端口号, 使用这个端口号是直接访问了uWSGI, 绕过了Nginx
+</span><span class="py">http</span> <span class="p">=</span> <span class="s">:8080</span>
+
+<span class="c"># 如果你已经配置了nginx(启动了nginx服务，配置了uwsgi_pass)，请用这个socket连接
+</span><span class="py">socket</span> <span class="p">=</span> <span class="s">0.0.0.0:8001</span>
+<span class="c">#是否使用主线程
+</span><span class="py">master</span> <span class="p">=</span> <span class="s">true</span>
+
+<span class="c"># 项目在服务器中的目录(绝对路径)
+</span><span class="py">chdir</span> <span class="p">=</span> <span class="s">/home/zfzdr/myblog-web</span>
+
+<span class="py">module</span> <span class="p">=</span> <span class="s">myblog.wsgi</span>
+
+<span class="c">;static-map=/static=%(chdir)/%(media)  # 仅加载media文件
+;static-map=/static=%(chdir)/%(collect_static) # 仅加载static文件
+;for =collect_static media
+;static-map=/static=%(chdir)/%(_)
+;endfor =
+# 设置日志目录
+</span><span class="py">daemonize</span><span class="p">=</span><span class="s">%(chdir)/uwsgi_conf/uwsgi.log</span>
+<span class="c"># uWSGI进程号存放
+</span><span class="py">pidfile</span><span class="p">=</span><span class="s">%(chdir)/uwsgi_conf/uwsgi.pid</span>
+
+<span class="c"># Django's wsgi 文件目录
+#wsgi-file = project_name/wsgi.py
+# 指明通过uwsgi启动最大进程数
+</span><span class="py">processes</span> <span class="p">=</span> <span class="s">4</span>
+<span class="c">#每个进程的线程数
+</span><span class="py">threads</span> <span class="p">=</span> <span class="s">2</span>
+<span class="c">#状态监听端口
+</span><span class="py">stats</span> <span class="p">=</span> <span class="s">127.0.0.1:9191</span>
+<span class="c"># 退出时自动清理环境配置
+</span><span class="py">vacuum</span> <span class="p">=</span> <span class="s">true </span>
+<span class="c">#目录下文件改动时自动重启
+</span><span class="py">touch-reload</span> <span class="p">=</span> <span class="s">/home/zfzdr/Web开发/myblog-web</span>
+<span class="c">#Python文件改动时自动重启
+</span><span class="py">py-auto-reload</span> <span class="p">=</span> <span class="s">1</span>
+<span class="c">#后台运行并把日志存到.log文件
+;daemonize = /home/zfzdr/Web开发/myblog/uWSGI.log
+</span></code></pre></div></div>
+
+<p>通过配置文件启动uwsgi</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>uwsgi <span class="nt">--ini</span> uwsgi_conf/uwsgi.ini
+</code></pre></div></div>
+
+<p>注意uwsgi不会处理静态文件，如果有，也是浏览器的缓存。如果想uwsgi也加载静态文件，可以通过static-map指定静态文件位置</p>
+
+<div class="language-ini highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="py">static-map</span><span class="p">=</span><span class="s">/static=%(chdir)/%(media)  # 仅加载media文件</span>
+<span class="py">static-map</span><span class="p">=</span><span class="s">/static=%(chdir)/%(collect_static) # 仅加载static文件</span>
+</code></pre></div></div>
+
+<ol>
+  <li>.配置django的settings.py，收集所有myblog项目所需的静态文件</li>
+</ol>
+
+<p>在settings.py配置文件加下面一行</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>STATIC_ROOT = os.path.join(BASE_DIR, "collect_static")
+</code></pre></div></div>
+
+<p>执行命令</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python manage.py collectstatic
+</code></pre></div></div>
+
+<h2 id="配置nginx">配置nginx</h2>
+
+<p>配置一个网站入口，当用户访问192.168.88.67:80 这个web应用时，自动将请求转发给uwsgi，uwsgi处理后，返回给nginx，返回给用户</p>
+
+<p>当请求是192.168.88.67:80的时候，其实访问的是192.168.88.67:9999 这是动态请求，因为我是找到的uwsgi</p>
+
+<p>nginx.conf配置如下</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>upstream blog_app {
+   # nginx通过socket在环回接口地址的9001端口与本地的uWSGI进程通信
+   # 支持ip:port模式以及socket file模式
+   #server unix:/opt/mywebapp/uwsgi_conf/uwsgi.sock;
+   server 127.0.0.1:8001;
+}
+
+
+server {
+    listen 8080;
+    #server_name ;
+    # 接入报告日志
+    access_log /home/zfzdr/myblog-web/nginx_conf/access.log;
+    # 错误日志
+    error_log /home/zfzdr/myblog-web/nginx_conf/error.log;
+    charset utf-8;
+
+    gzip_types text/plain application/x-javascript text/css text/javascript application/x-httpd-php application/json text/json image/jpeg image/gif image/png application/octet-stream;
+    error_page 404 /404.html;
+    error_page 500 502 503 504 /50x.html;
+
+    location /{
+        # nginx转发动态请求到uWSGI
+        include /home/zfzdr/myblog-web/uwsgi_conf/uwsgi_params;
+        #uwsgi_connect_timeout 20;　
+        uwsgi_pass blog_app;
+    }
+
+    # 如果写成/static/,nginx无法找到项目静态文件路径
+    location /static {
+        alias /home/zfzdr/myblog-web/collect_static/;
+    }
+
+    # 如果写成/media/,nginx无法找到项目媒体文件路径
+    location /media {
+        alias  /home/zfzdr/myblog-web/media/;
+    }
+
+}
+</code></pre></div></div>
+
+<ul>
+  <li>
+    <p>检查配置文件，加载配置文件</p>
+
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nginx <span class="nt">-t</span>
+nginx <span class="nt">-s</span> reload
+nginx
+</code></pre></div>    </div>
+
+    <p>如果访问时出现的是nginx官方页面，很有可能是没有加载到自己的配置，将sites- 下的配置删掉，就能访问到自己的网站了</p>
+
+    <h1 id="实现容器开机自启动的方法">实现容器开机自启动的方法</h1>
+
+    <p>在root下新建shell脚本run.sh</p>
+
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#! /bin/bash</span>
+/etc/init.d/ssh start
+/bin/bash
+</code></pre></div>    </div>
+
+    <p>添加执行权限</p>
+
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">chmod</span> +x run.sh
+</code></pre></div>    </div>
+
+    <p>生成镜像，启动时运行run.sh</p>
+
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run <span class="nt">-it</span> <span class="nt">-p</span> 22:22 <span class="nt">-p</span> 8000:8000 <span class="nt">-p</span> 8080:8080 zfzdr/django:1.5 /root/run.sh <span class="c"># 在新容器里面执行/root/run.sh 命令，即执行上面的脚本命令</span>
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+:ET
