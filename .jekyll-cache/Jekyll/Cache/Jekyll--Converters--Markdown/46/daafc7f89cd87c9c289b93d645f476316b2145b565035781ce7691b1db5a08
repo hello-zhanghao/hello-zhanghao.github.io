@@ -1,0 +1,403 @@
+I"�{<h1 id="jekyll使用教程">jekyll使用教程</h1>
+<h2 id="基本用法">基本用法</h2>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ jekyll build
+# =&gt; 当前文件夹中的内容将会生成到 ./_site 文件夹中。
+
+$ jekyll build --destination &lt;destination&gt;
+# =&gt; 当前文件夹中的内容将会生成到目标文件夹&lt;destination&gt;中。
+
+$ jekyll build --source &lt;source&gt; --destination &lt;destination&gt;
+# =&gt; 指定源文件夹&lt;source&gt;中的内容将会生成到目标文件夹&lt;destination&gt;中。
+
+$ jekyll build --watch
+# =&gt; 当前文件夹中的内容将会生成到 ./_site 文件夹中，
+#    查看改变，并且自动再生成。
+</code></pre></div></div>
+<hr />
+
+<h2 id="jekyll-目录结构">Jekyll 目录结构</h2>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>.
+├── _config.yml   
+├── _drafts
+|   ├── begin-with-the-crazy-ideas.textile
+|   └── on-simplicity-in-technology.markdown
+├── _includes
+|   ├── footer.html
+|   └── header.html
+├── _layouts
+|   ├── default.html
+|   └── post.html
+├── _posts
+|   ├── 2007-10-29-why-every-programmer-should-play-nethack.textile
+|   └── 2009-04-26-barcamp-boston-4-roundup.textile
+├── _site
+├── .jekyll-metadata
+└── index.html
+</code></pre></div></div>
+
+<ul>
+  <li>
+    <p>_config.yml</p>
+
+    <p>保存<a href="http://jekyllcn.com/docs/configuration/">配置</a>数据。很多配置选项都可以直接在命令行中进行设置，但是如果你把那些配置写在这儿，你就不用非要去记住那些命令了。</p>
+  </li>
+  <li>
+    <p>_drafts</p>
+
+    <p>drafts（草稿）是未发布的文章。这些文件的格式中都没有 <code class="language-plaintext highlighter-rouge">title.MARKUP</code> 数据。学习如何 <a href="http://jekyllcn.com/docs/drafts/">使用草稿</a>.</p>
+  </li>
+  <li>
+    <p>_includes</p>
+
+    <p><img src="https://gitee.com/zfzdr/myimages/raw/master//imgs/20210416200019.png" alt="image-20210416200019189" /></p>
+  </li>
+  <li>
+    <p>_layouts</p>
+
+    <p>layouts（布局）是包裹在文章外部的模板。布局可以在 <a href="http://jekyllcn.com/docs/frontmatter/">YAML 头信息</a>中根据不同文章进行选择。 这将在下一个部分进行介绍。标签 `&lt;h1 id="20210322"&gt;20210322&lt;/h1&gt;</p>
+  </li>
+</ul>
+
+<h2 id="learning-to-modulate-for-non-coherent-mimo2019">Learning to Modulate for Non-coherent MIMO（2019）</h2>
+
+<h3 id="系统模型">系统模型</h3>
+
+<p>[\boldsymbol{Y}=\boldsymbol{H}\boldsymbol{X}+\boldsymbol{Z}]</p>
+
+<p>其中， $\boldsymbol{X}\in C^{m\times L}, \boldsymbol{H}\in C^{n\times m}, \boldsymbol{Z}\in C^{n\times L}$, $L$表示$L$次信道使用，$\boldsymbol{H}$在这$L$次信道中保持不变。</p>
+
+<h3 id="encoder-parameterization">Encoder Parameterization</h3>
+
+<p>编码器映射 $f:{0, 1}^k\rightarrow \mathcal{C}^{m\times L}$</p>
+
+<h3 id="decoder-realizations">Decoder Realizations</h3>
+
+<ol>
+  <li>
+    <p>Presudo-ML Decoder</p>
+  </li>
+  <li>
+    <p>Neural Network (NN) Decoder
+\(g_{\theta}:\mathcal{C}^{n\times L}\rightarrow \mathbb{R}^{2^k}\)</p>
+  </li>
+</ol>
+
+<h3 id="优化目标">优化目标</h3>
+
+<p>最小化交叉熵损失函数
+\(\underset{\boldsymbol{C},\theta}{min}\quad \mathbb{E}[-\log_{\boldsymbol{m}|\boldsymbol{Y}}^{\theta}(\boldsymbol{m}|\boldsymbol{Y})]\)</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>[\mathbb{E}[-\log_{\boldsymbol{m}</td>
+      <td>\boldsymbol{Y}}^{\theta}(\boldsymbol{m}</td>
+      <td>\boldsymbol{Y})]=H(\boldsymbol{m}</td>
+      <td>\boldsymbol{Y})+KL(P_{\boldsymbol{m}</td>
+      <td>\boldsymbol{Y}}</td>
+      <td> </td>
+      <td>P_{\boldsymbol{m}</td>
+      <td>\boldsymbol{Y}}^\theta)]</td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <tbody>
+    <tr>
+      <td>理性的decoder优化应该使得估计后验概率$P_{\boldsymbol{m}</td>
+      <td>\boldsymbol{Y}}^\theta$收敛到真实的后验概率$P_{\boldsymbol{m}</td>
+      <td>\boldsymbol{Y}}$，完整的优化等效于最大化互信息$I(\boldsymbol{m};\boldsymbol{Y})=H(\boldsymbol{m})-H(\boldsymbol{m}</td>
+      <td>\boldsymbol{Y})$, 其中，$H(\boldsymbol{m})=k$是一个常数，其实就是最小化$H(\boldsymbol{m}</td>
+      <td>\boldsymbol{Y})$</td>
+    </tr>
+  </tbody>
+</table>
+
+<h1 id="20210329">20210329</h1>
+
+<h2 id="autoencoder-based-communication-system-using-multi-dimensional-constellations">Autoencoder based Communication System using Multi-Dimensional Constellations</h2>
+
+<h3 id="背景">背景</h3>
+
+<p>针对文章An Introduction to Deep Learning for the Physical Layer， 在指定的信道下学习以及优化，不适合实际的随机变化的信道，提出了基于MIMO的自编码器，可以适应于随机的衰落信道。指定信道下学习以及优化，在未训练的信道下鲁棒性很不错。此外，多维星座的收益依然可以很容易的获得。</p>
+
+<h3 id="系统模型-1">系统模型</h3>
+
+<p>[\boldsymbol{y}=\boldsymbol{Hx}+\boldsymbol{n}]</p>
+
+<p>其中：
+\(\boldsymbol{H}=\sqrt{\frac{K}{1+K}}\tilde{\boldsymbol{H}}+\sqrt{\frac{1}{1+K}}\boldsymbol{H}_w\)</p>
+
+<h3 id="自编码系统">自编码系统</h3>
+
+<p>通过优化发送机（transmitter）和接收机（receiver）以最小的误差重构输入数据</p>
+
+<p><img src="20210322.assets/image-20210329151501951.png" alt="image-20210329151501951" /></p>
+
+<p>图1-(a)展示了基于AWGN信道的自编码器系统。每一时刻，发送端发送$M=2^k$个信息中的一个，为了有效地学习，$k$bit的发送信息使用one-hot编码为$\boldsymbol{s}$，然后送入发送机（transmitter），然后，发送机对$\boldsymbol{s}$进行非线性变换，得到传输信号向量$\boldsymbol{x}=f(\boldsymbol{s})\in \mathbb{C}^{n\times 1}$, 其中，$n$表示$\boldsymbol{x}$的维度。发送信号$\boldsymbol{x}$经过信道得到接收信号$\boldsymbol{y}$，接收机(receiver)使用非线性变换回复传输的信息bit，$\hat{\boldsymbol{s}}=g(y)$，在输出端使用softmax来对传输信息进行分类。通过使用交叉熵损失函数，自编码学习最小化$\boldsymbol{s}$与$\hat{\boldsymbol{s}}$之间的差错概率。</p>
+
+<p>当$n$&gt;2时，我们可以获得一个多维星座集，其中每一个星座的维度等于$n$。一般情况下，多维星座集（星座维度&gt;2）中星座点之间的距离比传统的QAM星座更远。多维星座集可以通过多个时间，频率或空间资源进行传输。在论文中，学习到的星座集通过使用MIMO的空间资源进行传输，一个星座点的n个维度的复数信号通过n发送天线进行传输。本文中，多维星座集的维度与发送天线数目相等。由于MDC具有星座之间距离的优势，与传统的QAM星座相比，我们可以预期SER性能会得到改善。</p>
+
+<h3 id="仿真场景及结果">仿真场景及结果</h3>
+
+<p><img src="20210322.assets/image-20210329161259039.png" alt="image-20210329161259039" /></p>
+
+<p><img src="20210322.assets/image-20210329161318773.png" alt="image-20210329161318773" /></p>
+
+<p>图2显示了采用QAM星座的MDC和DET方案的自编码器SER曲线，其中$\sigma_E^2=0$。然而，在高信噪比区域，随着分集阶数的降低，仿真中加入的衰落项$\sqrt{\frac{1}{1+K}}\boldsymbol{H}_w$似乎是导致系统性能下降的主要原因。另外，由于自编码器的分集顺序低于DET方案的分集顺序，这两种16阶调制方案的SER性能在高信噪比区域可能会发生反转。另一方面，在64阶调制的情况下，自动编码器在所有信噪比区域都有较好的SER性能。图三显示随着信道变化幅度的增加，性能下降变得严重。然而，所提出的自编码器在一定的信道变化幅度下表现出一定的鲁棒性能</p>
+
+<h3 id="问题">问题</h3>
+
+<ol>
+  <li>
+    <p>DET(dominant eigenmode transmission)是什么？On Maximum Eigenmode Beamforming and Multi-User Gain</p>
+  </li>
+  <li>
+    <p>MIMO中的信道H矩阵定义似乎有点问题，当K=无穷时，H是不是就是一个常熟矩阵，其中每一项相等，这样的矩阵在线性方程中是不可解的。。。</p>
+  </li>
+</ol>
+
+<h1 id="20210330">20210330</h1>
+
+<h2 id="convae-a-new-channel-autoencoder-based-on-convolutional-layers-and-residual-connections">ConvAE: A New Channel Autoencoder Based on Convolutional Layers and Residual Connections</h2>
+
+<h3 id="背景-1">背景</h3>
+
+<p>信道自编码器方法的一个缺点是，对于训练，深度学习框架需要梯度传播来进行优化步骤。由于不可能通过真实的信道传播梯度，信道自动编码器不能在空中使用。然而，<a href="Physical layer communications system design over-the-air using adversarial networks">4</a>提出并验证了一种方法，在该方法中，生成式对抗网络被训练来生成真实的信道响应。这个结果非常重要，因为可以训练信道自动编码器来优化通信系统的任何方面。虽然信道自编码器展示了不错的性能，但是使用的网络通常是FC网络，本文提出使用卷积网络以及残差网络替换全连接层，提高了ber性能以及可达速率性能</p>
+
+<h3 id="相关工作">相关工作</h3>
+
+<p>文献<a href="Unsupervised deep learning for MU-SIMO joint transmitter and noncoherent receiver design">5</a>使用了信道自编码器来联合优化一个多用户SIMO发送机以及接收机，文献[6]使用修正的信道自编码器优化OFDM发送机（降低PAPR），文献[7]使用修正的信道自编码器提高非正交多址的和速率。</p>
+
+<p>本文结果对照文章[12](T. J. O’Shea, T. Erpek, and T. C. Clancy, “Deep learning based MIMO communications,” 2017)</p>
+
+<h3 id="系统模型-2">系统模型</h3>
+
+<p>点对点MIMO系统
+\(\boldsymbol{y}=\boldsymbol{Hx}+\boldsymbol{n}\)
+发送端每个时刻传输$k$bit信号，$\boldsymbol{H}$为瑞丽平坦衰落信道。</p>
+
+<h3 id="自编码器结构">自编码器结构</h3>
+
+<h4 id="残差块结构">残差块结构</h4>
+
+<p><img src="20210322.assets/image-20210330130028616.png" alt="image-20210330130028616" />
+\(y=\phi_r(x+BN(conv(\phi_r(BN(conv(x))))))=R(x)\)</p>
+
+<h4 id="convae结构">ConvAE结构</h4>
+
+<p><img src="20210322.assets/image-20210330130613627.png" alt="image-20210330130613627" /></p>
+
+<p>发送端把输入比特以及信道状态信息（CSI）作为输入来产生发送符号。对于输入，$k$比特信息以及扁平（flattened）的CSI矩阵连接成一个一维向量。然后该向量通过17个残差块，完成上述步骤后，将输出通过一个全连接网络（激活函数为tanh），获得一个$2N_t$的输出向量。$2N_t$输出表示每个发射机天线的同相和正交组件其次，对这些组件进行标准化，使每比特的能量为1。在数学上，发射机可以表示为:
+\(s_{tx} = \phi_t(FC(R(\cdots(R(b))\cdots))) = ConvAE_{tx}(b)\)
+接收机模块将接收符号作为输入，然后通过7个级联的残差块，完成上述步骤后，将输出通过一个全连接层（激活函数为sigmoid）获得一个k维的输出向量。在数学上，接收机可以表示为：
+\(b^*=\phi_s(FC(R(\cdots(R(s_{rx}))\cdots))) = ConvAE_{rx}(s_{rx})\)
+这里，接收器模块作为一个多标签二进制分类器，将输入信号分为$k$个有重叠的二进制类。通过硬决策将输出解码为比特;如果$b^*$中的某个元素大于0.5，则接收到的比特解码为1，如果小于0.5，则解码为0。例如，假设$k =2$，如果$[b^∗_1,b^∗_2]=[0.7,0.4]$，则得出$[b_1,b_2]=[1,0]$。</p>
+
+<h4 id="训练convae">训练ConvAE</h4>
+
+<p>在我们提出的方案中，训练网络在2 × 2 MIMO信道中最小化BER。在一般的自编码器系统中，广泛使用的损失函数是MSE，但是在该方案中，输入输出值为bit。对于分类任务，众所周知，交叉熵是一种比均方误差更合适的损失，在这种情况下，交叉熵的定义如下:
+\(\mathcal{L}=-\sum b\times log(ConvAE_{rx}(cha(ConvAE_{tx}(b))))\)</p>
+
+<h3 id="仿真">仿真</h3>
+
+<p>对于所有的自动编码器，我们假设发射机有完美的CSI。batch归一化层的衰减参数设置为0.9。TensorFlow批处理归一化层中的衰减参数表示用于计算总体均值和方差的移动平均的动量。通常选择接近于1的衰减值使移动平均线收敛。然而，如果衰减值太接近于1，移动平均线的更新就不会发生得足够快，导致在推断过程中性能较差。将衰减参数从0.999减小到0.9，得到了良好的推理性能。两种自编码器训练时的信噪比分别设置为15 dB(2比特)和25dB(4比特)。精确的训练信噪比是通过启发式的方法来确定的，从0 dB开始，每步以5dB的信噪比增量训练自编码器，直到找到在误码率方面性能最好的信噪比。值得注意的是，虽然所提出的ConvAE使用了一个更深入的网络，但在运行时的计算复杂度实际上比传统的FC方案要小得多。ConvAE处理一批数据平均需要12.2 μs，而传统FC方案平均需要0.259 s，这一事实证明了这一观察结果。之所以会出现这种结果，是因为卷积层比FC层支持更多的押注并行计算。然而，在训练过程中，ConvAE的计算复杂度增加了。基于FC层的自动编码器平均只需要10分钟就可以收敛到一个解，而ConvAE需要3个小时才能收敛到一个好的解。之所以存在这种差异，是因为ConvAE有一个更深入的模型，与较浅的模型相比，优化器会遇到困难。</p>
+
+<h4 id="仿真场景">仿真场景</h4>
+
+<table>
+  <thead>
+    <tr>
+      <th>Nr</th>
+      <th>Nt</th>
+      <th>k</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>2</td>
+      <td>2</td>
+      <td>2 | 4</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 id="对照组">对照组</h4>
+
+<ol>
+  <li>传统的FC网络，5个隐藏层，每个隐藏层2048个神经元</li>
+  <li>传统的卷积网络，与ConvAE网络的卷积层一样（不包含卷积层）</li>
+</ol>
+
+<h4 id="可达速率的计算">可达速率的计算</h4>
+
+<p>计算互信息
+\(I(b,b^*)=\sum_b\sum_{b^*}p(b,b^*)log_2\big(\frac{p(b,b^*)}{p(b)p(b^*)}\big)\)
+可达速率为$kI(b, b^*)$，表示一个时隙发送的总互信息。</p>
+
+<h4 id="仿真结果">仿真结果</h4>
+
+<center class="half">
+    <img src="20210322.assets/image-20210330135022320.png" width="50%" align="left" />
+    <img src="20210322.assets/image-20210330135022320.png" width="50%" align="right" />
+</center>
+
+<p>图3比较了本文提出的ConvAE与传统的FC和基于CNN的信道自编码器的误码率。结果表明，无论在2位还是4位情况下，ConvAE在Eb/N0值的整个范围内的误码率都优于所有传统的信道自编码器。同样值得注意的是，虽然在误码率方面的差异对于2位的情况是微妙的，但对于4位的情况则更加明显。常规方案和建议方案的可达率如图4所示。这些结果表明，在2比特的情况下，ConvAE在可达速率方面与传统的FC方案具有相同的性能。然而，ConvAE在4比特情况下的可达速率方面超过了传统的FC方案。</p>
+
+<p>出现上述两种结果的原因如下:对于2位的情况，由于2位的情况不是很复杂，传统的FC方案与ConvAE相比有足够的模型能力。然而，在复杂的4比特情况下，传统的FC方案缺乏模型能力，因此性能不如ConvAE。此外，基于CNN的自编码器的结果表明，在没有残块的情况下，其性能在误码率和可达率上都低于传统的FC方案。此外，对于传统的基于CNN的自动编码器，从误码率来看，2位和4位的情况并没有明显的区别。出现这种现象是因为没有残余的块，层不能收敛到一个好的解。这导致网络无法完全利用2位和4位情况的复杂性差异。综上所述，残余块体在ConvAE的作用中是至关重要的。</p>
+
+<p>此外，作者还在nakagami和Rician衰落环境下进行了模拟。虽然作者没有附加这些结果，但研究表明ConvAE在所有信道和信噪比范围内都超过了传统的FC结构。</p>
+
+<h3 id="待看">待看</h3>
+
+<ol>
+  <li>
+    <p>T. J. O’Shea, K. Karra, and T. C. Clancy, “Learning to communicate: Channel auto-encoders, domain specific regularizers, and attention,” in Proc. IEEE Int. Symp. Signal Process. Inf. Technol. (ISSPIT), Dec. 2016, pp. 223–228</p>
+  </li>
+  <li>T.J.O’Shea, T. Roy, N. West,and B. C. Hilburn, “Physical layer communications system design over-the-air using adversarial networks,” in Proc. 26th Eur. Signal Process. Conf. (EUSIPCO), Sep. 2018, pp. 529–532.</li>
+  <li>S. Xue, Y. Ma, N. Yi, and R. Tafazolli, “Unsupervised deep learning for MU-SIMO joint transmitter and noncoherent receiver design,” IEEE Wireless Commun. Lett., vol. 8, no. 1, pp. 177–180, Feb. 2019.</li>
+  <li>D. Yarotsky, “Universal approximations of invariant maps by neural networks,” 2018, arXiv:1804.10306. [Online]. Available: https://arxiv.org/abs/1804.10306</li>
+  <li>Z. Lu, H. Pu, F. Wang, Z. Hu, and L. Wang, “The expressive power of neural networks: A view from the width,” in Proc. Adv. Neural Inf. Process. Syst., 2017, pp. 6231–6239.</li>
+  <li>T. J. O’Shea, T. Erpek, and T. C. Clancy, “Deep learning based MIMO communications,” 2017, arXiv:1707.07980. [Online]. Available: https://arxiv.org/abs/1707.07980</li>
+</ol>
+
+<h2 id="unsupervised-deep-learning-for-mu-simo-joint-transmitter-and-noncoherent-receiver-design2019">Unsupervised Deep Learning for MU-SIMO Joint Transmitter and Noncoherent Receiver Design(2019)</h2>
+
+<h3 id="abstract">Abstract</h3>
+
+<p>本文旨在通过无监督深度学习处理多用户单输入多输出(MU-SIMO)通信的联合发射机和非相干接收机优化问题。研究表明，MU-SIMO可以被建模为一个有三个基本层的深度神经网络，其中包括一个用于发射机侧联合多用户波形设计的部分连接的线性层和两个用于非相干信号检测的非线性层。该方法在瑞利衰落信道中显示了显著的MU-SIMO非相干通信性能。</p>
+
+<h3 id="系统模型以及问题推导">系统模型以及问题推导</h3>
+
+<p>考虑一个多用户单入多出系统，接收机天线为$N$，每个用户（终端）配备一根天线，总共有$M(\leq N)$个用户，第$m$个用户的发送信号序列为$\boldsymbol{c}<em>m\triangleq [c</em>{0,m},\cdots,c_{L-1,m}]^T$，$L$为序列长度，接收信号可以表示为：
+\(\boldsymbol{y}_l=\boldsymbol{Hx}_l+\boldsymbol{v}_l,0\leq l\leq L-1\)
+其中，$\boldsymbol{x}<em>l=[c</em>{l,0}, \cdots, c_{l, M-1}]^T$, $\boldsymbol{H}\in \mathbb{C}^{N\times M}$，$\boldsymbol{v}_l$表示零均值方差为$\sigma_v^2$的白高斯噪声。两点重要假设：</p>
+
+<ol>
+  <li>接收机不知道信道矩阵$\boldsymbol{H}$</li>
+  <li>$\boldsymbol{c}_m$中的元素关于$l$互相关</li>
+</ol>
+
+<p>接收机目的是通过非相干序列检测从接收信号$\boldsymbol{y}<em>l,\forall l$中回复发送信号序列$\boldsymbol{c}_m, \forall m$。上述线性模型可以表示为：
+\(\boldsymbol{Y}=\boldsymbol{XH}^T+\boldsymbol{V}\)
+其中，$\boldsymbol{X}=[\boldsymbol{c}_0, \cdots,\boldsymbol{c}</em>{M-1}]\in \mathbb{C}^{L\times M}$ $\boldsymbol{Y}=\begin{bmatrix}\boldsymbol{y}<em>0^T \ \vdots \ \boldsymbol{y}</em>{L-1}^T\end{bmatrix}\in \mathbb{C}^{L\times M}$，因此，非相干接收机的检测函数$G(\cdot)$可以表示为：
+\(\hat{\boldsymbol{X}}=G(\boldsymbol{Y})\)</p>
+
+<p>##</p>
+
+<p>====================== 问题不太一样，待定 =========================================</p>
+
+<h2 id="spatial-time-mimo-autoencoder-for-physical-layer">Spatial-Time MIMO Autoencoder for Physical Layer</h2>
+
+<h3 id="abstract-1">Abstract</h3>
+
+<p>提出了用于传输空时符号块的端到端的通信结构，结果表明该自编码器结构能够学习到一个规则的星座集以及更低的误比特率。</p>
+
+<h1 id="20210406">20210406</h1>
+
+<h2 id="unity-rate-coded-iterative-transceivers-for-autoencoder-aided-communication-systems">Unity-Rate-Coded Iterative Transceivers for Autoencoder-Aided Communication Systems</h2>
+
+<h3 id="贡献">贡献</h3>
+
+<ol>
+  <li>保留基于模型的传统通信系统结构，直接计算LLR信息，比卖你符号信息到bit信息转换造成的性能劣化。</li>
+  <li>分析了CCMC和DCMC容量，证明了其比传统QAM更有容量优势</li>
+</ol>
+
+<h3 id="系统模型-3">系统模型</h3>
+
+<p>端到端通信系统，发送机调制系统以及接收机的解调模块使用DNN模块替换。</p>
+
+<p><img src="20210322.assets/image-20210406194758725.png" alt="image-20210406194758725" /></p>
+
+<h4 id="发送机">发送机</h4>
+
+<p>$A$比特信息序列$\boldsymbol{u}_1$通过FEC编码器输出$N$比特编码序列$\boldsymbol{c}_1$,然后通过URC（是一个卷积编码器，码率为$R=1$,可以看作一个扰码器）编码器得到$N$比特的FEC-URC编码比特序列$\boldsymbol{c}_2$。这样，URC编码过程可以被看作是一种基于块的映射技术，它有益地随机化外部信息位的位置，以支持迭代检测。$\boldsymbol{c}_2$通过交织器$\pi_2$得到扰码序列$\boldsymbol{c}_3=\pi_2(\boldsymbol{c}_2)$,$\boldsymbol{c}_3$被分在$Z=N/m$组，获得一个$m\times Z$的编码比特矩阵$\boldsymbol{U}_3$,其中$m=log_2M$表示映射到一个$M$阶符号的比特数目，$M$是调制阶数。$\boldsymbol{U}_3$的每一列通过AE-mapper完成bit到符号的映射。</p>
+
+<p><img src="20210322.assets/image-20210406200523200.png" alt="image-20210406200523200" /></p>
+
+<h4 id="接收机">接收机</h4>
+
+<p><img src="20210322.assets/image-20210406201229368.png" alt="image-20210406201229368" /></p>
+
+<p>信道冲激响应$\boldsymbol{h}=[h_1,h_2,\cdots,h_Z]^T$，则接收信号可以表示为：
+\(1\boldsymbol{y}=diag\{\boldsymbol{h}\}\boldsymbol{x}+\boldsymbol{n}\)</p>
+
+<h4 id="训练方法">训练方法</h4>
+
+<p>损失函数</p>
+
+<p><img src="20210322.assets/image-20210406202758904.png" alt="image-20210406202758904" /></p>
+
+<h3 id="容量分析">容量分析</h3>
+
+<h4 id="ccmc容量分析">CCMC容量分析</h4>
+
+<p>[1] M.-S. Yee, B. L. Yeap, and L. Hanzo, “Radial basis function-assisted turbo equalization,” IEEE Transactions on Communications, vol. 51, no. 4, pp. 664–675, 2003.
+[2] Z. Qin, H. Ye, G. Y. Li, and B.-H. F. Juang, “Deep learning in physical layer communications,” IEEE Wireless Communications, vol. 26, no. 2, pp. 93–99, 2019.
+[3] H. Huang, S. Guo, G. Gui, Z. Yang, J. Zhang, H. Sari, and F. Adachi, “Deep learning for physical-layer 5G wireless techniques: Opportunities, challenges and solutions,” IEEE Wireless Communications, vol. 27, no. 1, pp. 214–222, 2019.
+[4] L. Dai, R. Jiao, F. Adachi, H. V. Poor, and L. Hanzo, “Deep learning for wireless communications: An emerging interdisciplinary paradigm,” IEEE Wireless Communications, vol. 27, no. 4, pp. 133–139, 2020.
+[5] J. Wang, C. Jiang, H. Zhang, Y. Ren, K.-C. Chen, and L. Hanzo, “Thirty years of machine learning: The road to pareto-optimal wireless networks,” IEEE Communications Surveys &amp; Tutorials, vol. 22, no. 3, pp. 1472–1514, 2020.
+[6] H. He, S. Jin, C.-K. Wen, F. Gao, G. Y. Li, and Z. Xu, “Model-driven deep learning for physical layer communications,” IEEE Wireless Communications, vol. 26, no. 5, pp. 77–83, 2019.
+[7] N. Samuel, T. Diskin, and A. Wiesel, “Learning to detect,” IEEE Transactions on Signal Processing, vol. 67, no. 10, pp. 2554–2564, 2019.
+[8] J. Xia, K. He, W. Xu, S. Zhang, L. Fan, and G. K. Karagiannidis, “A MIMO detector with deep learning in the presence of correlated interference,” IEEE Transactions on Vehicular Technology, vol. 69, no. 4, pp. 4492–4497, 2020.
+[9] H. Ye, G. Y. Li, and B.-H. Juang, “Power of deep learning for channel estimation and signal detection in OFDM systems,”</p>
+
+<p>[10] H. He, C.-K. Wen, S. Jin, and G. Y. Li, “Deep learning-based channel estimation for beamspace mmWave massive MIMO systems,” IEEE Wireless Communications Letters, vol. 7, no. 5, pp. 852–855, 2018.
+[11] H. He, C.-K. Wen, S. Jin, and G. Y. Li, “Model-driven deep learning for MIMO detection,” IEEE Transactions on Signal Processing, vol. 68, pp. 1702–1715, 2020.
+[12] T. Van Luong, Y. Ko, N. A. Vien, D. H. Nguyen, and M. Matthaiou, “Deep learning-based detector for OFDM-IM,” IEEE wireless communications letters, vol. 8, no. 4, pp. 1159–1162, 2019.
+[13] H. Kim, S. Oh, and P. Viswanath, “Physical layer communication via deep learning,” IEEE Journal on Selected Areas in Information Theory, vol. 1, no. 1, pp. 5–18, 2020.
+[14] N. Shlezinger, N. Farsad, Y. C. Eldar, and A. J. Goldsmith, “Viterbinet: A deep learning based viterbi algorithm for symbol detection,” IEEE Transactions on Wireless Communications, vol. 19, no. 5, pp. 3319–3331, 2020.
+[15] N. Shlezinger, N. Farsad, Y. C. Eldar, and A. J. Goldsmith, “Data-driven factor graphs for deep symbol detection,” arXiv preprint arXiv:2002.00758, 2020.
+[16] Y. Wang, M. Liu, J. Yang, and G. Gui, “Data-driven deep learning for automatic modulation recognition in cognitive radios,” IEEE Transactions on Vehicular Technology, vol. 68, no. 4, pp. 4074–4077, 2019.
+[17] T. O’Shea and J. Hoydis, “An introduction to deep learning for the physical layer,” IEEE Transactions on Cognitive Communications and Networking, vol. 3, no. 4, pp. 563–575, 2017.
+[18] S. Dörner, S. Cammerer, J. Hoydis, and S. Ten Brink, “Deep learning based communication over the air,” IEEE Journal of Selected Topics in Signal Processing, vol. 12, no. 1, pp. 132–143, 2017.</p>
+
+<p>[19] E. Balevi and J. G. Andrews, “One-bit OFDM receivers via deep learning,” IEEE Transactions on Communications, vol. 67, no. 6, pp. 4326–4336, 2019.
+[20] G. Gui, H. Huang, Y. Song, and H. Sari, “Deep learning for an effective nonorthogonal multiple access scheme,” IEEE Transactions on Vehicular Technology, vol. 67, no. 9, pp. 8440–8450, 2018.
+[21] W. Zhang, S. Li, and Y. Cui, “Jointly sparse support recovery via deep auto-encoder with applications in MIMO-based grant-free random access for mMTC,” arXiv preprint arXiv:2005.02389, 2020</p>
+
+<p>[22] T. Van Luong, Y. Ko, N. A. Vien, M. Matthaiou, and H. Q. Ngo, “Deep energy autoencoder for noncoherent multicarrier MU-SIMO systems,” IEEE Transactions on Wireless Communications, vol. 19, no. 6, pp. 3952–3962, 2020.
+[23] J. Tao, J. Chen, J. Xing, S. Fu, and J. Xie, “Autoencoder neural network based intelligent hybrid beamforming design for mmwave massive mimo systems,” IEEE Transactions on Cognitive Communications and Networking, vol. 6, no. 3, pp. 1019–1030, 2020.
+[24] I. Goodfellow, Y. Bengio, A. Courville, and Y. Bengio, Deep learning, vol. 1. MIT press Cambridge, 2016. [25] F. A. Aoudia and J. Hoydis, “Model-free training of end-to-end communication systems,” IEEE Journal on Selected Areas in Communications, vol. 37, no. 11, pp. 2503–2516, 2019.
+[26] S. Cammerer, F. A. Aoudia, S. Dörner, M. Stark, J. Hoydis, and S. Ten Brink, “Trainable communication systems: Concepts and prototype,” IEEE Transactions on Communications, vol. 68, no. 9, pp. 5489–5503, 2020.
+[27] 3GPP TS 38.212 V15.1.1, “NR Multiplexing and channel coding,” 3rd Generation Partnership Project Std. 3GPP, 2018.
+[28] T. Richardson and S. Kudekar, “Design of low-density parity check codes for 5G new radio,” IEEE Communications Magazine, vol. 56, no. 3, pp. 28–34, 2018.
+[29] Z. B. K. Egilmez, L. Xiang, R. G. Maunder, and L. Hanzo, “The development, operation and performance of the 5G polar codes,” IEEE Communications Surveys &amp; Tutorials, vol. 22, no. 1, pp. 96–122, 2019.
+[30] L. Hanzo, T. Liew, B. Yeap, R. Tee, and S. X. Ng, Turbo coding, turbo equalisation and space-time coding: EXIT- chart-aided near-capacity designs for wireless channels, vol. 22. John Wiley &amp; Sons, 2011.
+[31] W. Zhang, M. F. Brejza, T. Wang, R. G. Maunder, and L. Hanzo, “Irregular trellis for the near-capacity unary error correction coding of symbol values from an infinite set,” IEEE Transactions on Communications, vol. 63, no. 12, pp. 5073–5088, 2015.
+[32] Z. Babar, H. V. Nguyen, P. Botsinis, D. Alanis, D. Chandra, S. X. Ng, and L. Hanzo, “Serially concatenated unity- rate codes improve quantum codes without coding-rate reduction,” IEEE Communications Letters, vol. 20, no. 10, pp. 1916–1919, 2016.
+[33] Z. Babar, H. V. Nguyen, P. Botsinis, D. Alanis, D. Chandra, S. X. Ng, and L. Hanzo, “Unity-rate codes maximize the normalized throughput of on–off keying visible light communication,” IEEE Photonics Technology Letters, vol. 29, no. 3, pp. 291–294, 2016.
+[34] Z. Babar, M. A. M. Izhar, H. V. Nguyen, P. Botsinis, D. Alanis, D. Chandra, S. X. Ng, R. G. Maunder, and L. Hanzo, “Unary-coded dimming control improves on-off keying visible light communication,” IEEE Transactions on Communications, vol. 66, no. 1, pp. 255–264, 2017.
+[35] J. Hu, M. Li, K. Yang, S. X. Ng, and K.-K. Wong, “Unary coding controlled simultaneous wireless information and power transfer,” IEEE Transactions on Wireless Communications, vol. 19, no. 1, pp. 637–649, 2019.
+[36] L. Bottou, “Large-scale machine learning with stochastic gradient descent,” in Proceedings of COMPSTAT’2010, pp. 177–186, Springer, 2010.
+[37] D. P. Kingma and J. Ba, “Adam: A method for stochastic optimization,” arXiv preprint arXiv:1412.6980, 2014. [38] S. X. Ng and L. Hanzo, “On the MIMO channel capacity of multidimensional signal sets,” IEEE Transactions on Vehicular Technology, vol. 55, no. 2, pp. 528–536, 2006.
+[39] M. El-Hajjar and L. Hanzo, “EXIT charts for system design and analysis,” IEEE Communications Surveys &amp; Tutorials, vol. 16, no. 1, pp. 127–153, 2013.
+[40] Y. Liu, L.-L. Yang, and L. Hanzo, “Spatial modulation aided sparse code-division multiple access,” IEEE Transactions on Wireless Communications, vol. 17, no. 3, pp. 1474–1487, 2017.</p>
+
+<p>` 可以将content插入页面中。</p>
+
+<ul>
+  <li>
+    <p>_posts</p>
+
+    <p>这里放的就是你的文章了。文件格式很重要，必须要符合: <code class="language-plaintext highlighter-rouge">YEAR-MONTH-DAY-title.MARKUP</code>。 <a href="http://jekyllcn.com/docs/permalinks/">永久链接</a> 可以在文章中自己定制，但是数据和标记语言都是根据文件名来确定的。</p>
+  </li>
+  <li>
+    <p>_data</p>
+
+    <p>格式化好的网站数据应放在这里。jekyll 的引擎会自动加载在该目录下所有的 yaml 文件（后缀是 <code class="language-plaintext highlighter-rouge">.yml</code>, <code class="language-plaintext highlighter-rouge">.yaml</code>, <code class="language-plaintext highlighter-rouge">.json</code> 或者 <code class="language-plaintext highlighter-rouge">.csv</code> ）。这些文件可以经由 ｀site.data｀ 访问。如果有一个 <code class="language-plaintext highlighter-rouge">members.yml</code> 文件在该目录下，你就可以通过 <code class="language-plaintext highlighter-rouge">site.data.members</code> 获取该文件的内容。</p>
+  </li>
+  <li>
+    <p>_site</p>
+
+    <p>一旦 Jekyll 完成转换，就会将生成的页面放在这里（默认）。最好将这个目录放进你的 <code class="language-plaintext highlighter-rouge">.gitignore</code> 文件中。</p>
+  </li>
+  <li>
+    <p>.jekyll-metadata</p>
+  </li>
+</ul>
+
+:ET

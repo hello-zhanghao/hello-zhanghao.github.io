@@ -1,0 +1,54 @@
+I"<h1 id="jekyll使用教程">jekyll使用教程</h1>
+<h2 id="基本用法">基本用法</h2>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ jekyll build
+# =&gt; 当前文件夹中的内容将会生成到 ./_site 文件夹中。
+
+$ jekyll build --destination &lt;destination&gt;
+# =&gt; 当前文件夹中的内容将会生成到目标文件夹&lt;destination&gt;中。
+
+$ jekyll build --source &lt;source&gt; --destination &lt;destination&gt;
+# =&gt; 指定源文件夹&lt;source&gt;中的内容将会生成到目标文件夹&lt;destination&gt;中。
+
+$ jekyll build --watch
+# =&gt; 当前文件夹中的内容将会生成到 ./_site 文件夹中，
+#    查看改变，并且自动再生成。
+</code></pre></div></div>
+<hr />
+
+<h2 id="jekyll-目录结构">Jekyll 目录结构</h2>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>.
+├── _config.yml   
+├── _drafts
+|   ├── begin-with-the-crazy-ideas.textile
+|   └── on-simplicity-in-technology.markdown
+├── _includes
+|   ├── footer.html
+|   └── header.html
+├── _layouts
+|   ├── default.html
+|   └── post.html
+├── _posts
+|   ├── 2007-10-29-why-every-programmer-should-play-nethack.textile
+|   └── 2009-04-26-barcamp-boston-4-roundup.textile
+├── _site
+├── .jekyll-metadata
+└── index.html
+</code></pre></div></div>
+
+<ul>
+  <li>
+    <p>_config.yml</p>
+
+    <p>保存<a href="http://jekyllcn.com/docs/configuration/">配置</a>数据。很多配置选项都可以直接在命令行中进行设置，但是如果你把那些配置写在这儿，你就不用非要去记住那些命令了。</p>
+  </li>
+  <li>
+    <p>_drafts</p>
+
+    <p>drafts（草稿）是未发布的文章。这些文件的格式中都没有 <code class="language-plaintext highlighter-rouge">title.MARKUP</code> 数据。学习如何 <a href="http://jekyllcn.com/docs/drafts/">使用草稿</a>.</p>
+  </li>
+  <li>
+    <p>_includes</p>
+  </li>
+</ul>
+:ET

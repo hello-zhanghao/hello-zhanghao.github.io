@@ -2,7 +2,9 @@
 
 ## 系统模型
 
-### MIMO系统模型
+![image-20201111155637668](../../../AppData/Roaming/Typora/typora-user-images/image-20201111155637668.png?lastModify=1618569170?lastModify=1618569206)
+
+![image-20201111155637668](../../../AppData/Roaming/Typora/typora-user-images/image-20201111155637668.png?lastModify=1618569170)
 
 ![image-20201111155637668](C:\Users\admin\AppData\Roaming\Typora\typora-user-images\image-20201111155637668.png)
 $$
@@ -29,7 +31,7 @@ Y=\Lambda X
 
 
 
-
+
 $$
 对于MIMO-OFDM系统，则在每一个子载波上存在一个等效MIMO信道：
 $$

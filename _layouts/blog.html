@@ -1,0 +1,102 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% if page.title %}{{ page.title }} - {{ site.title }}{% else %}{{ site.title }}{% endif %}</title>
+    <meta name="author"  content="{{ site.author }}">
+    <meta name="description" content="{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}">
+    <meta name="keywords"  content="{% if page.tags.size > 0 %}{% for tag in page.tags  %}{{ tag }}{% if forloop.last == false %}, {% endif %}{% endfor %}{% endif %}">
+    <!-- Open Graph -->
+    <meta property="og:title" content="{% if page.title %}{{ page.title }} - {{ site.title }}{% else %}{{ site.title }}{% endif %}">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ page.url | prepend: site.url }}">
+    <meta property="og:description" content="{{ site.description }}">
+    <meta property="og:site_name" content="{{ site.title }}">
+    <link rel="stylesheet" href="/assets/css/worg.css">
+    <!-- <link rel="stylesheet" href="/assets/css/github-markdown.css">  -->
+    <!-- <link rel="stylesheet" href="//cdn.staticfile.org/normalize/6.0.0/normalize.min.css"> -->
+    <script type="text/javascript">
+        /*
+        @licstart  The following is the entire license notice for the
+        JavaScript code in this tag.
+        
+        Copyright (C) 2012-2018 Free Software Foundation, Inc.
+        
+        The JavaScript code in this tag is free software: you can
+        redistribute it and/or modify it under the terms of the GNU
+        General Public License (GNU GPL) as published by the Free Software
+        Foundation, either version 3 of the License, or (at your option)
+        any later version.  The code is distributed WITHOUT ANY WARRANTY;
+        without even the implied warranty of MERCHANTABILITY or FITNESS
+        FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+        
+        As additional permission under GNU GPL version 3 section 7, you
+        may distribute non-source (e.g., minimized or compacted) forms of
+        that code without the copy of the GNU GPL normally required by
+        section 4, provided you include this license notice and a URL
+        through which recipients can access the Corresponding Source.
+        
+        
+        @licend  The above is the entire license notice
+        for the JavaScript code in this tag.
+        */
+         function CodeHighlightOn(elem, id)
+         {
+           var target = document.getElementById(id);
+           if(null != target) {
+             elem.cacheClassElem = elem.className;
+             elem.cacheClassTarget = target.className;
+             target.className = "code-highlighted";
+             elem.className   = "code-highlighted";
+           }
+         }
+         function CodeHighlightOff(elem, id)
+         {
+           var target = document.getElementById(id);
+           if(elem.cacheClassElem)
+             elem.className = elem.cacheClassElem;
+           if(elem.cacheClassTarget)
+             target.className = elem.cacheClassTarget;
+         }
+        </script>
+        <script type="text/x-mathjax-config">
+            MathJax.Hub.Config({
+                displayAlign: "left",
+                displayIndent: "3em",
+        
+                "HTML-CSS": { scale: 100,
+                                linebreaks: { automatic: "false" },
+                                webFont: "TeX"
+                               },
+                SVG: {scale: 100,
+                      linebreaks: { automatic: "false" },
+                      font: "TeX"},
+                NativeMML: {scale: 100},
+                TeX: { equationNumbers: {autoNumber: "AMS"},
+                       MultLineWidth: "85%",
+                       TagSide: "right",
+                       TagIndent: ".8em"
+                     }
+        });
+        </script>
+        <script type="text/javascript"
+                src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_HTML"></script>
+                
+</head>
+
+<body>
+    <div class="post-content visible">
+    {% if page.subtitle %}
+    <h2 class="post-subtitle">{{ page.subtitle }}</h2>
+    {% endif %}
+
+    <article class="markdown-body">
+      {{ page.content }}
+    </article>
+
+    {% if site.social-share %}
+    <div class="social-share-wrapper">
+      <div class="social-share"></div>
+    </div>
+    {% endif %}
+  </div>
+</body>
