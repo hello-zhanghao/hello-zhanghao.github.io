@@ -1,3 +1,8 @@
+---
+layout: blog
+category: 计算机
+tags: Web
+---
 # Win10中使用Docker搭建Django开发环境
 
 ## 下载链接

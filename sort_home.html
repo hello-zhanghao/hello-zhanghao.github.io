@@ -1,0 +1,33 @@
+---
+layout: worghome
+---
+
+
+{% for category in site.categories %}
+    <h2 id="org7b5caa6">{{category.first}}</h2>
+    <div class="outline-text-2" id="text-org7b5caa6">
+        <p> </p>
+    </div>
+    {% for tag in site.tags %}
+        {% for post in tag.last %}
+            {% if  post.category == category.first %}
+                <div class="outline-3">
+                    <h3>{{tag.first}}</h3>
+                    <div class="outline-text-3" id="text-org5356823">
+                        <p> </p>
+                        <ul class="org-ul">
+                            {% for post in tag.last %}
+                                {% if  post.category == category.first %}
+                                    <li>
+                                        <a href="{{post.url}}">{{ post.title }}</a> 
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+                {% break %}
+            {% endif %}
+        {% endfor %}
+    {% endfor %}
+{% endfor %}

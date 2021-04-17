@@ -1,8 +1,8 @@
 ---
 layout: post
 title: git基本操作
-categories: git
 tags: git
+category: 工具
 ---
 
 # 版本控制器git的基本命令  
