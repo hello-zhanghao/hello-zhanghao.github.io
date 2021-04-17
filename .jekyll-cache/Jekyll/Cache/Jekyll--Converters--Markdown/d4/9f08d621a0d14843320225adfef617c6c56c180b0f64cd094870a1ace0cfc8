@@ -1,0 +1,440 @@
+I"�9<h2 id="点对点mimo系统模型">点对点MIMO系统模型</h2>
+
+\[\mathbf{y}=\mathbf{H}\mathbf{x}+\mathbf{z}\]
+
+<p>其中，$\mathbf{y}\in\mathbf{C}^{N_r\times1}, \mathbf{x}\in\mathbf{C}^{N_t\times1}, \mathbf{z} \in\mathbf{C}^{N_r\times1}$，发送端总能量为$E{x^Hx}=P$，噪声功率谱密度为$N_0$，即$E{zz^H}=N_0I_{N_r}$,且
+\(\begin{equation}
+\begin{aligned}
+R_{yy}&amp;=E\{yy^H\} \\
+&amp;=HR_{xx}H^H+N_0I_{N_r}
+\end{aligned}
+\end{equation}\)</p>
+
+<h2 id="系统容量">系统容量</h2>
+
+\[\begin{equation}
+\begin{aligned}
+I(x;y)&amp;=H(x)-H(x|y)\\
+&amp;=H(y)-H(y|x) \\
+&amp;=H(y)-H(Hx+z|x) \\
+&amp;=H(y)-H(z|x) \\
+&amp;=H(y)-H(z)
+\end{aligned}
+\end{equation}\]
+
+<p>其中，$z$是满足复高斯随机分布的多维向量，因此当且仅当$y$也满足复高斯随机分布时，上式取得最大值，且</p>
+
+\[H(y)=log_2|\pi eR_{yy}|=log_2|\pi eHR_{xx}H^H+\pi eN_0I_{N_r}| \\
+H(z)=log_2|\pi e N_0I_{N_r}|\]
+
+<p>于是，</p>
+
+\[I(x;y)=log_2\left|I_{N_r} + \frac{HR{xx}H^H}{N_0}\right|\]
+
+<h3 id="传输侧无csi">传输侧无CSI</h3>
+
+<ul>
+  <li>假设每根天线上的发送信号能量相等且相互独立，即$R_{xx}=\frac{P}{N_t}I_{N_t}$，则<br />
+\(\begin{equation}
+\begin{aligned}
+C&amp;=log_2\left|I_{N_r} + \frac{P}{N_tN_0}HH^H\right| \\
+&amp;=\sum_{i=1}^{N_t}log_2(1+\frac{P}{N_tN_0}\lambda_i)
+\end{aligned}
+\end{equation}\)</li>
+</ul>
+
+<h3 id="传输侧有csi">传输侧有CSI</h3>
+
+<ul>
+  <li>预编码提高信道容量</li>
+</ul>
+
+<p>对信道矩阵$H$使用SVD分解，即$H=U\Sigma V^H$，一般假设$Nr&gt;Nt$,则
+\(\Sigma=\left[ 
+\begin{matrix}
+\sqrt{\lambda_1} &amp; 0 &amp; \cdots &amp; 0 \\
+0 &amp; \sqrt{\lambda_2} &amp; \cdots &amp; 0 \\
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+0 &amp; 0 &amp; \cdots &amp; \sqrt{\lambda_{N_t}} \\
+\vdots &amp; \vdots &amp; \vdots &amp; \vdots \\
+0 &amp; 0 &amp; 0 &amp; 0
+\end{matrix}
+\right]\)
+令调制后信号能量表示为$\tilde{x}$，预编码后的发送信号能量为$x=V^H\tilde{x}$,则
+$$
+\begin{equation}
+\begin{aligned}
+y &amp;= Hx+z <br />
+&amp;=U\Sigma V^HV\tilde{x}+z \ 
+&amp;=U\Sigma\tilde{x}+z
+\end{aligned}
+\end{equation}  =&gt;</p>
+
+<p>U^Hy = U^HU\Sigma\tilde{x}+U^Hz =&gt;
+\tilde{y}=\Sigma\tilde{x}+\tilde{z}
+\(上式展开为\)
+\left[
+\begin{matrix}
+\tilde{y}<em>1 <br />
+\tilde{y}_2 <br />
+\vdots <br />
+\tilde{y}</em>{N_t} <br />
+\vdots <br />
+\tilde{y}<em>{N_r}
+\end{matrix}
+\right]
+=\left[ 
+\begin{matrix}
+\sqrt{\lambda_1} &amp; 0 &amp; \cdots &amp; 0 <br />
+0 &amp; \sqrt{\lambda_2} &amp; \cdots &amp; 0 <br />
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots <br />
+0 &amp; 0 &amp; \cdots &amp; \sqrt{\lambda</em>{N_t}} <br />
+\vdots &amp; \vdots &amp; \vdots &amp; \vdots <br />
+0 &amp; 0 &amp; 0 &amp; 0
+\end{matrix}
+\right]
+\left[
+\begin{matrix}
+\tilde{x}<em>1 <br />
+\tilde{x}_2 <br />
+\vdots <br />
+\tilde{x}</em>{N_t}
+\end{matrix}
+\right] + 
+\left[
+\begin{matrix}
+\tilde{z}<em>1 <br />
+\tilde{z}_2 <br />
+\vdots <br />
+\tilde{z}</em>{N_t} <br />
+\vdots <br />
+\tilde{z}<em>{N_r}
+\end{matrix}
+\right]
+\(即\)
+\tilde{y}_i=\sqrt{\lambda_i}\tilde{x}_i+\tilde{z}_i, i=1,\cdots,r.一般\ r=N_t
+\(原始的MIMO信道等效为$r$个SISO信道，每个SISO信道的信道容量可以表示为：\)
+C_i(P_i)=log_2(1+\frac{\lambda_iP_i}{N_0})
+\(其中，$P_i$表示第$i$根天线上的信号能量，且\)
+E{x^Hx}=\sum</em>{i=1}^{N_t}E{|x_i|^2}=\sum_{i=1}^{N_t}P_i=P
+\(于是，信道总容量为：\)
+C=\sum_{i=1}^{N_t}C_i(P_i)=\sum_{i=1}^{N_t}log_2(1+\frac{\lambda_iP_i}{N_0})
+\(可以通过注水算法优化功率分配，达到更大的信道容量，即\)
+C={\underset{{P_i}} {\operatorname {arg\,max}}}\ \sum_{i=1}^{N_t}C_i(P_i)=\sum_{i=1}^{N_t}log_2(1+\frac{\lambda_iP_i}{N_0}) <br />
+s.t\ \  \sum_{i=1}^{N_t}P_i=P
+\(最优解为\)
+P_i^{opt}=(\mu -\frac{N_0}{\lambda_i})^+, i=1,\cdots,r <br />
+\sum_{i=1}^{N_t}P_i=P
+$$</p>
+
+<h2 id="mimo预编码">MIMO预编码</h2>
+
+<h3 id="线性预编码技术">线性预编码技术</h3>
+
+<ul>
+  <li>线性预编码系统框架</li>
+</ul>
+
+<p><img src="https://gitee.com/zfzdr/myimages/raw/master//imgs/20210416203437.png" alt="image-20200812150002801" /></p>
+
+<ul>
+  <li>ZF pre-equalization</li>
+</ul>
+
+\[\begin{equation}
+W_{ZF}=\beta H^{-1} \\
+\beta = \sqrt{\frac{N_t}{Tr \left( H^{-1}(H^{-1})^H\right)} }
+\end{equation}\]
+
+<ul>
+  <li>MMSE pre-equation</li>
+</ul>
+
+\[W_{MMSE} = \beta\times{\underset{W}{\operatorname{arg\, min}}}E\{||\beta^{-1}(HW\tilde{x}+z)-\tilde{x}||^2\}\\
+=\beta\times H^H\left( HH^H+\frac{\sigma_z^2}{\sigma_x^2}I\right)^{-1}\]
+
+<h1 id="多用户mimo">多用户MIMO</h1>
+
+<h2 id="系统模型">系统模型</h2>
+
+<p>考虑有K个相互独立的用户以及一个基站，每个用户配备的天线数目为$N_M$,基站的天线数码为$N_B$</p>
+
+<h3 id="上行信道系统模型多址接入信道模型">上行信道系统模型（多址接入信道模型）</h3>
+
+<p><img src="https://gitee.com/zfzdr/myimages/raw/master//imgs/20210416203452.png" alt="image-20200812151515538" /></p>
+
+<p>其中，
+\(x_u\in C^{N_m\times 1},u=1,\cdots,K \ 第u个用户的发送信号向量\\
+y_{MAC}\in C^{N_B\times 1}  \ 接收信号向量\\
+H_u^{UL}\in C^{N_B\times N_M}, u=1,\cdots,K \ 第u个用户到基站的信道矩阵\)</p>
+
+<h3 id="下行信道模型广播信道模型">下行信道模型（广播信道模型）</h3>
+
+<p><img src="https://gitee.com/zfzdr/myimages/raw/master//imgs/20210416203501.png" alt="image-20200812151956211" />
+\(y_u = H_u^{DL}x+z_u, u=1,2,\cdots,K \ 第k个用户接收到的基站发送的信号\)
+其中：
+\(\begin{aligned}
+x\in C^{N_B\times 1})&amp;,表示基站发送信号 \\
+H_u^{DL}\in C^{N_M\times N_B}&amp;, 表示基站到用户u的信道矩阵 \\
+z_u\in C^{N_M\times 1}&amp;, 第u个用户的噪声
+\end{aligned}\)</p>
+
+<h2 id="信道容量">信道容量</h2>
+
+<h2 id="广播信道传输方法">广播信道传输方法</h2>
+
+<h3 id="n_m1">N_M=1</h3>
+
+<ul>
+  <li>channel inversion(类似于ZF预均衡)</li>
+  <li>regularized channel inversion（类似于MMSE预均衡）</li>
+</ul>
+
+<h3 id="n_m1-1">N_M&gt;1</h3>
+
+<h4 id="block-diagonalization">Block Diagonalization</h4>
+
+<h2 id="dirty-paper-codingdpc">Dirty Paper Coding(DPC)</h2>
+
+<p>当传输侧完美获得CSI时可以利用DPC消除干扰</p>
+
+<h2 id="tomlinson-harashima-precoding">Tomlinson-Harashima Precoding[]</h2>
+
+<h1 id="mimo信道估计">MIMO信道估计</h1>
+
+\[Y=HP+N\]
+
+<p>其中，$Y\in C^{N_r\times L}$，表示接收导频序列，$P\in C^{N_t\times L}$，表示发送导频序列，$N\in C^{N_r\times L}$，表示噪声</p>
+
+<h2 id="ls信道估计参考">LS信道估计<a href="https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&amp;arnumber=1597555">参考</a></h2>
+
+\[H_{LS}=YP^H(PP^H)^{-1}\]
+
+<p>最优导频：</p>
+
+<p><img src="https://gitee.com/zfzdr/myimages/raw/master//imgs/20210416203510.png" alt="image-20200814104315993" /></p>
+
+<h2 id="lmmse信道估计技术参考">LMMSE信道估计技术<a href="https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&amp;arnumber=1597555">参考</a></h2>
+
+\[\hat{H}_{MMSE}=Y(P^HR_HP+\sigma_n^2N_rI_{L\times L})^{-1}P^HR_H\]
+
+<p>其中，$R_H=E{H^HH}$</p>
+
+<h1 id="信噪比定义">信噪比定义</h1>
+
+<h2 id="信噪比定义1">信噪比定义1</h2>
+
+<p>信噪比定义：
+\(SNR=\frac{\pmb{x}^H\pmb{H}^H\pmb{H}\pmb{x}}{\pmb{n}^H\pmb{n}}\)</p>
+
+<ul>
+  <li>对于复数信号，假设发送信号每个复数符号能量为1，信道矩阵每一个矩阵元素是均值为0，方差为1的iid复高斯随机变量，噪声向量的每个元素为iid的均值为0，方差为$\sigma^2$复高斯随机变量，则
+\(SNR=\frac{tr{(\pmb{H}^H}\pmb{H})}{N_r\sigma^2}\)
+若
+\(tr(\pmb{H}^H\pmb{H})=p,\\
+令 \ \ \pmb{H}_{norm}=\sqrt{\frac{N_r}{p}}\pmb{H} \\\)
+则：
+\(tr(\pmb{H}_{norm}^H\pmb{H}_{norm})=\frac{N_r}{p}tr(\pmb{H}^H\pmb{H})=N_r\)</li>
+</ul>
+
+<p>则在信道矩阵为$\pmb{H}_{norm}$时的信噪比为：
+\(SNR=10*log10(\frac{1}{\sigma^2}) \to \sigma^2=\frac{1}{10^{0.1*SNR}}\)</p>
+
+<ul>
+  <li>
+    <p>对于实数信号，假设发送信号每个符号能量为1，信道矩阵每一个矩阵元素是均值为0，方差为1的iid高斯随机变量，噪声向量的每个元素为iid的均值为0，方差为$\sigma^2$高斯随机变量，则</p>
+  </li>
+  <li>
+\[SNR=\frac{tr{(\pmb{H}^H}\pmb{H})}{2*N_r\sigma^2}\]
+
+    <p>若
+\(tr(\pmb{H}^H\pmb{H})=p,\\
+令 \ \ \pmb{H}_{norm}=\sqrt{\frac{2*N_r}{p}}\pmb{H} \\\)
+则：
+\(tr(\pmb{H}_{norm}^H\pmb{H}_{norm})=\frac{2*N_r}{p}tr(\pmb{H}^H\pmb{H})=2*N_r\)</p>
+  </li>
+</ul>
+
+<p>则在信道矩阵为$\pmb{H}_{norm}$时的信噪比为：
+\(SNR=10*log10(\frac{1}{\sigma^2}) \to \sigma^2=\frac{1}{10^{0.1*SNR}}\)</p>
+
+<ul>
+  <li>因此，每个噪声能量为：
+\(\sigma_{实}^2=\frac{0.5}{10^{0.1*SNR}}\)</li>
+</ul>
+
+<h2 id="信噪比定义2">信噪比定义2</h2>
+
+\[SNR =\frac{ E\{x^Hx\}}{\sigma^2},\sigma^2为噪声方差\]
+
+<p>若发送符号iid且各天线发送功率相等，则：
+\(\frac{E\{x^HH^HHx\}}{N_r\sigma^2}=\frac{tr(H^HH)E\{x^Hx\}}{N_tN_r\sigma^2}\)
+因此，当信道矩阵元素iid且方差为1，则两种信噪比定义相同</p>
+
+<h1 id="相关论文">相关论文</h1>
+
+<h2 id="mimo-broadcastchannels-with-finite-rate-feedback">MIMO BroadcastChannels with Finite Rate Feedback</h2>
+
+<ul>
+  <li>
+    <p>随机向量量化（Random Vector Quantization）</p>
+
+    <p>使用随机码本是因为这个问题的最优向量量化器一般是未知的，已知的上界是相当松散的。</p>
+  </li>
+  <li>
+    <p>相对于完美的CSIT，缺乏CSIT导致10 log10 M dB SNR损耗。即$C_{no-CSIT}(P)=C_{CSIT}(\frac{P}{M})$</p>
+  </li>
+  <li>
+    <p>有限CSI feedback的可达速率约为</p>
+  </li>
+</ul>
+
+<p><img src="https://gitee.com/zfzdr/myimages/raw/master//imgs/20210416203520.png" alt="image-20200812163738781" /></p>
+
+<p>因此，使用有限反馈导致相对于完美CSIT的信噪比下降约$10log_{10}(1-2^{-\frac{B}{M-1}})$</p>
+
+<p><img src="https://gitee.com/zfzdr/myimages/raw/master//imgs/20210416203529.png" alt="image-20200812164025816" /></p>
+
+<ul>
+  <li>在渐近高信噪比条件下，ZF预编码性能在所有线性预编码器中是最优的，在较低信噪比下，规整ZF预编码性能优于纯ZF预编码，并随着信噪比增大，两者性能趋近</li>
+  <li>由于有限feedback，DPC不能直接应用于该场景，可以</li>
+</ul>
+
+<h2 id="deep-learning-for-massive-mimo-csi-feedback-2018">Deep Learning for Massive MIMO CSI Feedback 2018</h2>
+
+<p>提出了一种新的网络结构CsiNet，可以用于将CSI信息转换为一定数量的码本并根据码本恢复出CSI信息</p>
+
+<p>就是一种自编码结构，网络采用卷积网络和全连接网络</p>
+
+<p><img src="https://gitee.com/zfzdr/myimages/raw/master//imgs/20210416203540.png" alt="image-20200812202924620" /></p>
+
+<h2 id="mimo-channel-information-feedback-using-deep-recurrent-network">MIMO Channel Information Feedback Using Deep Recurrent Network</h2>
+
+<p><img src="https://gitee.com/zfzdr/myimages/raw/master//imgs/20210416203548.png" alt="image-20200812204936817" /></p>
+
+<h2 id="deep-learning-based-limited-feedback-designs-for-mimo-systems-jeonghyeon">Deep Learning-Based Limited Feedback Designs for MIMO Systems Jeonghyeon</h2>
+
+<ul>
+  <li>信道估计＋有限反馈 联合优化</li>
+</ul>
+
+<h3 id="系统模型-1">系统模型</h3>
+
+<ul>
+  <li>
+    <p>FDD MIMO系统（准静态频域平坦衰落信道）</p>
+  </li>
+  <li>
+    <p>接收天线数：$N_r$</p>
+  </li>
+  <li>
+    <p>发射天线数：$N_t$</p>
+
+    <p>$s=wx\in C^{N_t\times 1}$为预编码信号，$H\in C^{N_R\times N_t}, w\in C^{N_t\times1}, y\in C^{N_R\times1}, n\in C^{N_r\times 1}\sim CN(0, \sigma_n^2I_{N_r})$</p>
+
+    <h3 id="信道估计">信道估计</h3>
+
+    <ul>
+      <li>导频序列</li>
+    </ul>
+
+    <p>$L$个导频序列$p_l\in C^{N_t\times 1}, l=1,\cdots,L$，$y_l^{train}=\sqrt{E_p}Hp_l+N_l$</p>
+
+    <p>构造</p>
+  </li>
+</ul>
+
+\[\begin{equation}
+\begin{aligned}
+Y^{train}&amp;=[y_1^{train},\cdots,y_L^{train}]\in C^{N_r\times L} \\
+P &amp;= [p_1,\cdots,p_L]  \in C^{N_t\times L}\\
+N &amp;= [n_1, \cdots, n_L]\in C^{N_r\times L}
+\end{aligned}
+\end{equation}\]
+
+<p>则：
+\(Y^{train}=\sqrt{E_p}HP+N
+\label{sasdskajdh}\)
+这里导频矩阵$P$定义为归一化离散傅里叶变换矩阵
+\(p_i=\frac{1}{\sqrt{N_t}}[1, e^{j2\pi(i-1)/L},\cdots, e^{j2\pi(i-1)(N_t-1)/L}]^T\)
+从式$\ref{sasdskajdh}$可以利用LMMSE估计得到CSI的估计$\hat{H}$</p>
+
+<h3 id="limited-feedback">Limited Feedback</h3>
+
+<table>
+  <tbody>
+    <tr>
+      <td>假设预设计码本为$C={w_1,\cdots,w_{2^B}},</td>
+      <td> </td>
+      <td>w_i</td>
+      <td> </td>
+      <td>=1$</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>最优索引号选择策略，<strong>最大化有效信道增益</strong>
+\(i^*=arg\underset{i\in \{1,\cdots,2^B\}} {max}||\hat{H}w_i||^2\)
+通过Lloyd算法设计出最优码本使得平均有效信道增益最大$E_H{||\hat{H}w||^2}$</p>
+
+<ul>
+  <li>接收机：$i^*=f_R(Y^{train})$</li>
+  <li>
+    <p>发送机：$w=f_T(i^*)=f_T(f_R(Y^{train}))$</p>
+  </li>
+  <li>优化问题</li>
+</ul>
+
+\[\underset{f_T(\cdot),f_R(\cdot)}{max}E_{H,N}[||Hf_T(i^*)||_2^2] \\
+subject\ to\ \  i^*=f_R(Y^{train})\in \{1,\cdots,2^B\}\]
+
+\[b(z)=z+e,for\ z\in[-1,1]\]
+
+\[e=\left\{
+ \begin{aligned}
+ \begin{array}
+ \ 1-z,\ &amp;with\ \ probability \frac{1+z}{2} \\
+ -1-z,\ &amp;with\ \ probability \frac{1+z}{2} \\
+ \end{array}
+ \end{aligned}
+ \right.\]
+
+<h4 id="网络结构发送端">网络结构(发送端)</h4>
+
+<table>
+  <tbody>
+    <tr>
+      <td>$M_T$层的全连接DNN神经网络 $w=g_T(b;\theta_T)$,激活函数为$Relu$。输出层归一化$a_{M_T+1}(z)=\frac{z}{</td>
+      <td> </td>
+      <td>z</td>
+      <td> </td>
+      <td>_2^2}$,DNN的输出为$\tilde{w}=[\mathfrak{R}{w}\ \mathfrak{I}{w}]\in R^{2N_t\times1}$,然后转换为复数向量$w$.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 id="信道">信道</h4>
+
+<p>信道矩阵的协方差矩阵$R_H=E{H^HH}\in C^{N_t\times N_t}$,构造方法为$H=\sqrt{\frac{1}{N_r}}H_{norm}R_H^{\frac{1}{2}}$，其中$H_{norm}$中的每个元素满足独立同分布的$\mathcal{CN}(0,1)$,因此$R_H=E{\frac{1}{N_r}(R_H^{\frac{1}{2}})^HH_{norm}^HH_{norm}R_H^{\frac{1}{2}}}=(\frac{1}{N_r}N_rR_H^{\frac{1}{2}})^H(R_H^{\frac{1}{2}})=R_H$
+\([R_H]_{i,j}=\left\{
+\begin{array}\
+\ N_rt^{|i-j|} &amp;for\ i&lt;j \\
+\ N_r(t^*)^{|i-j|} &amp; otherwise
+\end{array}
+\right.\)
+当$N_t=4$时:
+\(R_H=\left[
+\begin{array}\
+1 &amp; t &amp; t^2 &amp;t^3 \\
+t^* &amp; 1 &amp; t &amp; t^2 \\
+(t^*)^2 &amp; t^* &amp;1 &amp;t \\
+(t^*)^3 &amp; (t^*)^2 &amp; t^* &amp; 1
+\end{array}
+\right]\)</p>
+
+<p>#### 信道码本<a href="https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&amp;arnumber=7562370">参考</a></p>
+
+<p><img src="https://gitee.com/zfzdr/myimages/raw/master//imgs/20210416203556.png" alt="image-20200814140755338" />
+\([W]_{m,n}=\frac{1}{\sqrt{M}}e^{j\frac{2\pi}{N}(m-1)n},m=1,2,\cdots,M\)</p>
+
+:ET

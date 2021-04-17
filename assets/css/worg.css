@@ -259,11 +259,14 @@
 
     img {
         border: none;
+        /* height: 100%; */
+        width: auto;
         vertical:middle;
         vertical-align:middle;
         dispaly:block;
         margin:0 auto;
     }
+    
     div.figure{
         text-align:center;
     }

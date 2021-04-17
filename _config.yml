@@ -77,6 +77,16 @@ RSS: false
 permalink: /:year/:month/:day/:title.html
 
 # Plugins
-plugins: [jekyll-paginate]
+plugins: 
+  - jekyll-paginate
+  - jekyll-admin
+# jekyll_admin:
+#   hidden_links:
+#     - posts
+#     - pages 
+#     - staticfiles
+#     - datafiles 
+#     - configuration
+#   homepage: "pages"
 
-theme: jekyll-theme-midnight
+# theme: jekyll-theme-midnight
